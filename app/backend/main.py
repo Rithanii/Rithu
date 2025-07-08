@@ -7,9 +7,10 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
-# Import models
-from models.user import User, db as user_db
-from models.profile import Profile, Skill, Experience, Education, db as profile_db
+# Import models and db
+from models import db
+from models.user import User
+from models.profile import Profile, Skill, Experience, Education
 
 # Create Flask app
 app = Flask(__name__)
@@ -17,9 +18,7 @@ app.config.from_object(Config)
 
 # Initialize extensions
 CORS(app)
-
-# Initialize database
-db = SQLAlchemy(app)
+db.init_app(app)
 
 def setup_database():
     """Setup database tables"""
@@ -33,8 +32,5 @@ def create_app():
     return app
 
 if __name__ == '__main__':
-    # Setup database tables
-    setup_database()
-    
-    # Run the app
+    # setup_database()  # Only run this when you need to create tables
     app.run(debug=True) 
